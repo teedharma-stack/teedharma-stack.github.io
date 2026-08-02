@@ -1,0 +1,88 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Teedharma Somsuk | Finance Portfolio</title><style>
+  :root{--bg:#F7F4EC;--card:#FDFBF6;--ink:#241E17;--muted:#6B6153;--faint:#9A9080;
+    --accent:#1E6E68;--accent2:#2B8A83;--line:#E6E0D2;--pos:#178A5A;--neg:#B23B3B;
+    --tag:#F1ECE1;--plk:#E6F0EE;--plkh:#DCEBE8;--hdr:rgba(253,251,246,.92);
+    --sans:"Segoe UI",Roboto,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;}
+  *{box-sizing:border-box}html,body{margin:0}
+  body{background:var(--bg);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;line-height:1.55;transition:background-color .25s,color .25s}
+  .num{font-variant-numeric:tabular-nums}a{color:inherit}
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px}
+  header{border-bottom:1px solid var(--line);background:var(--hdr);backdrop-filter:blur(6px);position:sticky;top:0;z-index:10}
+  .hrow{display:flex;justify-content:space-between;align-items:center;height:60px}
+  .brand{font-weight:800;letter-spacing:.02em;text-decoration:none;font-size:20px}
+  .brand span{color:var(--accent)}
+  .hright{display:flex;align-items:center;gap:4px}
+  .navico{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:9px;color:var(--muted);text-decoration:none}
+  .navico:hover{color:var(--accent);background:var(--tag)}
+  .hlinks{display:flex;align-items:center}
+  .hlinks a{margin-left:18px;font-size:14px;color:var(--muted);text-decoration:none}
+  .hlinks a:hover{color:var(--accent)} .hlinks a.on{color:var(--accent);font-weight:700}
+  .tglbtn{margin-left:14px;background:none;border:1px solid var(--line);border-radius:9px;width:36px;height:36px;display:inline-flex;align-items:center;justify-content:center;color:var(--muted);cursor:pointer}
+  .tglbtn:hover{border-color:var(--accent);color:var(--accent)}
+  @media(max-width:560px){.hlinks a{margin-left:12px;font-size:13px}}
+
+  .hero{padding:52px 0 30px}
+  .eyebrow{font-size:12px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:clamp(32px,5.5vw,50px);line-height:1.05;margin:12px 0 10px;font-weight:800;letter-spacing:-.02em}
+  .lead{font-size:clamp(16px,2.3vw,19px);color:var(--muted);max-width:640px;margin:0}
+  .cta{margin-top:24px;display:flex;gap:12px;flex-wrap:wrap}
+  .btn{display:inline-block;padding:11px 18px;border-radius:10px;font-size:14px;font-weight:600;text-decoration:none;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer;font-family:var(--sans)}
+  .btn.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+  .btn:hover{border-color:var(--accent)}
+
+  .sec{padding:26px 0}
+  .sechead{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:20px}
+  .sec h2{font-size:13px;letter-spacing:.2em;text-transform:uppercase;color:var(--faint);font-weight:700;margin:0}
+  .pagetitle{font-size:clamp(26px,4vw,38px);font-weight:800;letter-spacing:-.02em;margin:36px 0 6px}
+  .pagesub{color:var(--muted);margin:0 0 22px;max-width:640px}
+  .seeall{font-size:14px;font-weight:600;color:var(--accent);text-decoration:none}
+  .seeall:hover{text-decoration:underline}
+
+  .card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:26px;margin-bottom:20px;transition:box-shadow .18s,transform .18s}
+  .card:hover{box-shadow:0 10px 30px rgba(40,30,15,.08);transform:translateY(-2px)}
+  .ctag{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  .card h3{font-size:22px;margin:8px 0 6px;font-weight:800;letter-spacing:-.01em}
+  .card p{color:var(--muted);margin:0 0 16px;max-width:660px}
+  .stats{display:flex;gap:26px;flex-wrap:wrap;margin:0 0 16px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .stat .v{font-size:21px;font-weight:800}.stat .v.neg{color:var(--neg)}.stat .v.pos{color:var(--pos)}
+  .stat .k{font-size:12px;color:var(--faint)}
+  .cats{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
+  .cat{font-size:12px;color:var(--muted);background:var(--tag);border:1px solid var(--line);border-radius:999px;padding:4px 12px;cursor:pointer;text-decoration:none}
+  .cat:hover{border-color:var(--accent);color:var(--accent)}
+  .links{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .plink{font-size:13px;font-weight:600;color:var(--accent);background:var(--plk);border:1px solid var(--line);border-radius:9px;padding:7px 13px;cursor:pointer}
+  .plink:hover{background:var(--plkh)}
+  .dlink{font-size:13px;font-weight:600;color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:9px;padding:7px 11px}
+  .dlink:hover{border-color:var(--accent);color:var(--accent)}
+  .ext{font-size:13px;font-weight:600;color:var(--faint);text-decoration:none}.ext:hover{color:var(--accent)}
+
+  .filters{display:flex;gap:9px;flex-wrap:wrap;margin-bottom:24px}
+  .filt{font-size:13px;font-weight:600;color:var(--muted);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 15px;cursor:pointer}
+  .filt:hover{border-color:var(--accent);color:var(--accent)}
+  .filt.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+  footer{border-top:1px solid var(--line);margin-top:24px;padding:26px 0;color:var(--faint);font-size:13px}
+  footer a{color:var(--accent);text-decoration:none}
+
+  .overlay{position:fixed;inset:0;background:rgba(40,30,20,.5);backdrop-filter:blur(3px);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;z-index:100;overflow:auto}
+  .overlay.open{display:flex}
+  .modal{background:var(--card);border-radius:16px;max-width:760px;width:100%;box-shadow:0 30px 80px rgba(40,30,15,.28);position:relative;margin:auto}
+  .modal.wide{max-width:1000px}
+  .mhead{display:flex;justify-content:space-between;align-items:center;padding:20px 24px;border-bottom:1px solid var(--line)}
+  .mhead h3{margin:0;font-size:18px;font-weight:800}
+  .mclose{border:none;background:var(--tag);width:32px;height:32px;border-radius:8px;cursor:pointer;font-size:17px;color:var(--muted);line-height:1}
+  .mclose:hover{background:var(--plkh);color:var(--ink)}
+  .mbody{padding:22px 24px;color:var(--muted);font-size:15px}.mbody b{color:var(--ink)}
+  .mbody ul{margin:10px 0 14px;padding-left:20px}.mbody li{margin:5px 0}
+  .mbody img{width:100%;border-radius:10px;border:1px solid var(--line)}
+  .frameWrap{overflow:hidden;border-radius:0 0 16px 16px}
+  .frameWrap iframe{width:100%;height:78vh;border:0;display:block;background:#102A2E}
+
+  body[data-theme="dark"]{--bg:#0E1C1E;--card:#152B2E;--ink:#EAF3F2;--muted:#9DB8B7;--faint:#5F7E7D;
+    --accent:#3FB5AC;--accent2:#5AD0C6;--line:rgba(255,255,255,.12);--pos:#3BD08A;--neg:#FF6E6E;
+    --tag:#1B3538;--plk:#16332F;--plkh:#1E433D;--hdr:rgba(21,43,46,.9)}
+  body[data-theme="dark"] .btn.primary{color:#0E1C1E}
+  body[data-theme="dark"] .filt.on{color:#0E1C1E}
+  body[data-theme="dark"] .card:hover{box-shadow:0 10px 30px rgba(0,0,0,.4)}
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style></head><body><header><div class="wrap hrow"><a class="brand" href="index.html">TS<span>.</span></a><div class="hright"><a class="navico" href="index.html" aria-label="Home"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5L12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/></svg></a><nav class="hlinks"><a href="projects.html">Projects</a><a href="tools.html">Tools</a><a href="#contact">Contact</a></nav><button id="themeToggle" class="tglbtn" aria-label="Toggle dark mode"></button></div></div></header><div class="wrap"><section class="hero"><div class="eyebrow">Finance &middot; Equity Research &middot; Valuation</div><h1>Independent finance research &amp; valuation, with a Southeast&nbsp;Asia edge.</h1><p class="lead">Finance student at Wuhan University. I build real research and models rather than just studying them, combining valuation fundamentals with tools people can actually use. Focused on Thai, SEA, and US markets.</p><div class="cta"><a class="btn primary" href="projects.html">See my projects</a><a class="btn" href="#contact">Get in touch</a></div></section><section class="sec"><div class="sechead"><h2>Recent Projects</h2><a class="seeall" href="projects.html">See all projects &rarr;</a></div><article class="card"><div class="ctag">Quantitative / Event Study</div><h3>Thai IPO Performance Study (2025-26)</h3><p>An original dataset of every 2025-26 SET and mai listing, each benchmarked against the SET Index to isolate stock-specific performance from the market.</p><div class="stats num"><div class="stat"><div class="v neg">-51 pts</div><div class="k">median IPO vs. market</div></div><div class="stat"><div class="v">21%</div><div class="k">beat the index</div></div><div class="stat"><div class="v">19</div><div class="k">IPOs studied</div></div></div><div class="cats"><span class="cat">Equity Research</span><span class="cat">Quant &amp; Data</span></div><div class="links"><a class="plink" href="projects.html#proj-ipo">View project</a></div></article><article class="card"><div class="ctag">Private Equity / LBO</div><h3>Planet Fitness Leveraged Buyout</h3><p>A full buyout analysis of Planet Fitness after a ~52% drawdown: a five-year model, an interactive returns dashboard, and a PE-style investment memo.</p><div class="stats num"><div class="stat"><div class="v pos">~17%</div><div class="k">base-case IRR</div></div><div class="stat"><div class="v">2.2&times;</div><div class="k">money multiple</div></div><div class="stat"><div class="v">3</div><div class="k">deliverables</div></div></div><div class="cats"><span class="cat">Deals &amp; Valuation</span><span class="cat">Interactive Tools</span></div><div class="links"><a class="plink" href="projects.html#proj-lbo">View project</a></div></article><article class="card"><div class="ctag">Mergers &amp; Acquisitions</div><h3>GameStop / eBay Accretion / Dilution</h3><p>Modeled GameStop's $56B bid for eBay: an accretion/dilution analysis showing it screens +65% accretive, but only on unproven synergies, while levering the combined company to about 9x.</p><div class="stats num"><div class="stat"><div class="v pos">+65%</div><div class="k">with synergies</div></div><div class="stat"><div class="v neg">-29%</div><div class="k">without</div></div><div class="stat"><div class="v">9.3x</div><div class="k">leverage at close</div></div></div><div class="cats"><span class="cat">Deals &amp; Valuation</span><span class="cat">Interactive Tools</span></div><div class="links"><a class="plink" href="projects.html#proj-ma">View project</a></div></article></section><section class="sec"><div class="sechead"><h2>Interactive Tools</h2><a class="seeall" href="tools.html">Explore the tools &rarr;</a></div><article class="card"><p style="margin:0">Two live models you can drive yourself: a <b>Universal LBO Modeler</b> and a <b>Universal M&amp;A (accretion/dilution) Modeler</b>. Enter any company, drag the deal levers, and watch returns update in real time.</p><div class="links" style="margin-top:16px"><a class="plink" href="tools.html">Open the tools</a></div></article></section><section class="sec" id="contact"><h2>Contact</h2><p class="lead" style="font-size:18px;margin-bottom:6px">A finance undergraduate building a track record of independent research and deal analysis.</p><p class="lead">Currently seeking a summer analyst internship across Singapore and Southeast Asia, and open to conversations with teams in banking, private equity, and equity research.</p><div class="cta"><a class="btn primary" href="https://www.linkedin.com/in/teedharma-somsuk-b40ba3373/" target="_blank" rel="noopener">LinkedIn</a><a class="btn" href="mailto:pufferfish211248@gmail.com">Email</a></div></section></div><footer><div class="wrap">&copy; <span id="yr"></span> Teedharma Somsuk &middot; Independent finance portfolio &middot; Figures are from illustrative research exercises and are not investment advice.</div></footer><script>document.getElementById("yr").textContent=new Date().getFullYear();(function(){var b=document.body,k="portfolio-theme",t=document.getElementById("themeToggle");var M='<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';var S='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>';function ap(x){if(x=="dark"){b.setAttribute("data-theme","dark");t.innerHTML=S;}else{b.removeAttribute("data-theme");t.innerHTML=M;}}var sv="light";try{sv=localStorage.getItem(k)||"light";}catch(e){}ap(sv);t.addEventListener("click",function(){var n=b.getAttribute("data-theme")=="dark"?"light":"dark";ap(n);try{localStorage.setItem(k,n);}catch(e){}});(function(){function op(o){var f=o.querySelector("iframe[data-src]");if(f&&!f.src){f.src=f.getAttribute("data-src");}o.classList.add("open");b.style.overflow="hidden";}function cl(o){o.classList.remove("open");b.style.overflow="";}document.querySelectorAll("[data-modal]").forEach(function(x){x.addEventListener("click",function(){var o=document.getElementById(x.getAttribute("data-modal"));if(o)op(o);});});document.querySelectorAll(".overlay").forEach(function(o){o.addEventListener("click",function(e){if(e.target===o)cl(o);});o.querySelectorAll("[data-close]").forEach(function(c){c.addEventListener("click",function(){cl(o);});});});document.addEventListener("keydown",function(e){if(e.key==="Escape"){document.querySelectorAll(".overlay.open").forEach(cl);}});})();})();</script></body></html>
