@@ -47,7 +47,7 @@ window.SITE = {
     name: "Teedharma Somsuk",
     role: "Finance Student · Equity Research",
     status: "Available · Thailand / SEA",
-    photo: "assets/photo.jpg",          // upload your photo with exactly this name. No photo? Your initials show instead.
+    photo: "photo.jpg",          // upload your photo with exactly this name (photo.jpg). No photo? Your initials show instead.
     cv: "Teedharma_Somsuk_CV.pdf",      // To update your CV: upload the new PDF with this exact name. Nothing else to change.
     email: "pufferfish211248@gmail.com",
     linkedin: "https://www.linkedin.com/in/teedharma-somsuk-b40ba3373/",

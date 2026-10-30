@@ -10,9 +10,9 @@
 The home page counters, the sidebar's "Latest research" list, and (soon) the Portfolio page all update by themselves.
 
 ## Your photo and CV
-- Photo: upload a square photo into the `assets` folder named exactly `photo.jpg`. Until then your initials show.
+- Photo: upload a square photo named exactly `photo.jpg`. Until then your initials show.
 - CV: to update it, just upload the new PDF named exactly `Teedharma_Somsuk_CV.pdf` (it replaces the old one). Optionally change `updated: "October 2026"` in `content.js`.
 
 ## Files you normally never touch
-- `assets/style.css` (the design)
-- `assets/site.js` (draws the sidebar and pages)
+- `style.css` (the design)
+- `site.js` (draws the sidebar and pages)
