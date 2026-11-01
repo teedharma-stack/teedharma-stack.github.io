@@ -57,7 +57,7 @@
     '<div class="social">' +
       (P.linkedin ? '<a href="' + esc(P.linkedin) + '" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">' + I.li + '</a>' : '') +
       (P.github ? '<a href="' + esc(P.github) + '" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">' + I.gh + '</a>' : '') +
-      (P.email ? '<a href="mailto:' + esc(P.email) + '" aria-label="Email" title="Email">' + I.mail + '</a>' : '') +
+      (P.email ? '<a href="mailto:' + esc(P.email) + '" data-contact aria-label="Email" title="Email">' + I.mail + '</a>' : '') +
     '</div>' +
     '<div class="scopy">&copy; ' + new Date().getFullYear() + ' ' + esc(P.name) + '</div>';
 
@@ -113,7 +113,7 @@
           for (var wy = top + 14; wy < Math.min(L.base, H) - 10; wy += 18) {
             for (var wx = x + 10; wx < x + bw - 12; wx += 15) {
               if (r() < L.lit) {
-                var c = r() < .72 ? "#e9c477" : (r() < .6 ? "#f4ead0" : "#5fd18a");
+                var c = r() < .72 ? "#c9d2d6" : (r() < .6 ? "#eef3f5" : "#5fd18a");
                 svg += '<rect x="' + wx + '" y="' + wy + '" width="8" height="10" fill="' + c + '" opacity="' + (L.a * (.35 + r() * .6)).toFixed(2) + '"/>';
               }
             }
@@ -135,7 +135,7 @@
           var bw = 110 + r() * 150, bh = L.hmin + r() * (L.hmax - L.hmin), top = L.base - bh;
           svg += '<rect x="' + x + '" y="' + top + '" width="' + bw + '" height="' + (H - top) + '" fill="' + L.fill + '"/>';
           for (var wy = top + 20; wy < Math.min(L.base, H) - 20; wy += 26) for (var wx = x + 14; wx < x + bw - 16; wx += 22)
-            if (r() < L.lit) svg += '<rect x="' + wx + '" y="' + wy + '" width="10" height="12" fill="#e9c477" opacity="' + (.35 + r() * .4).toFixed(2) + '"/>';
+            if (r() < L.lit) svg += '<rect x="' + wx + '" y="' + wy + '" width="10" height="12" fill="#c9d2d6" opacity="' + (.35 + r() * .4).toFixed(2) + '"/>';
           x += bw + 10 + r() * 30;
         }
       });
@@ -148,7 +148,7 @@
           var yy = y0 + Math.sin(xx / 260 + ph) * amp + Math.sin(xx / 97 + k) * 9;
           d += (xx ? " L" : "M") + xx + " " + yy.toFixed(1);
         }
-        svg += '<path d="' + d + '" fill="none" stroke="' + (k % 5 === 0 ? "#d9b867" : "#3d8a58") + '" stroke-width="' + (k % 5 === 0 ? 1.6 : 1.1) + '" opacity="' + (k % 5 === 0 ? .6 : .55) + '"/>';
+        svg += '<path d="' + d + '" fill="none" stroke="' + (k % 5 === 0 ? "#c9d2d6" : "#3d8a58") + '" stroke-width="' + (k % 5 === 0 ? 1.6 : 1.1) + '" opacity="' + (k % 5 === 0 ? .6 : .55) + '"/>';
       }
       svg += '</svg>';
     } else if (bgType === "ledger") {
@@ -157,20 +157,20 @@
       for (var gy = 0; gy <= H; gy += 40) svg += '<line y1="' + gy + '" y2="' + gy + '" x1="0" x2="' + W + '" stroke="#2a5a3d" stroke-width="' + (gy % 200 ? .8 : 1.6) + '"/>';
       var pts = [], pv = 780;
       for (var px = 0; px <= W; px += 40) { pv += (r() - .62) * 46; pv = Math.max(160, Math.min(860, pv)); pts.push(px + "," + pv.toFixed(0)); }
-      svg += '<polyline points="0,' + H + ' ' + pts.join(" ") + ' ' + W + ',' + H + '" fill="#d9b867" opacity=".09"/>';
-      svg += '<polyline points="' + pts.join(" ") + '" fill="none" stroke="#d9b867" stroke-width="3" opacity=".75"/>';
+      svg += '<polyline points="0,' + H + ' ' + pts.join(" ") + ' ' + W + ',' + H + '" fill="#c9d2d6" opacity=".09"/>';
+      svg += '<polyline points="' + pts.join(" ") + '" fill="none" stroke="#c9d2d6" stroke-width="3" opacity=".75"/>';
       svg += '</svg>';
     } else if (bgType === "glow") {
       svg = '<svg class="chart soft" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice"><defs>' +
         '<radialGradient id="g1"><stop offset="0" stop-color="#36a056" stop-opacity=".75"/><stop offset="1" stop-color="#2f8a4a" stop-opacity="0"/></radialGradient>' +
-        '<radialGradient id="g2"><stop offset="0" stop-color="#d9b867" stop-opacity=".4"/><stop offset="1" stop-color="#d9b867" stop-opacity="0"/></radialGradient>' +
+        '<radialGradient id="g2"><stop offset="0" stop-color="#c9d2d6" stop-opacity=".4"/><stop offset="1" stop-color="#c9d2d6" stop-opacity="0"/></radialGradient>' +
         '<radialGradient id="g3"><stop offset="0" stop-color="#23807a" stop-opacity=".6"/><stop offset="1" stop-color="#1c5e5a" stop-opacity="0"/></radialGradient></defs>' +
         '<rect width="' + W + '" height="' + H + '" fill="#05100a"/>' +
         '<ellipse cx="300" cy="820" rx="700" ry="420" fill="url(#g1)"/><ellipse cx="1300" cy="180" rx="620" ry="380" fill="url(#g3)"/>' +
         '<ellipse cx="900" cy="560" rx="520" ry="300" fill="url(#g2)"/><ellipse cx="1500" cy="900" rx="420" ry="260" fill="url(#g1)"/></svg>';
     }
     if (bgType === "skyline" || bgType === "contour" || bgType === "ledger" || bgType === "glow") { bd.className += " calm"; }
-    var dots = [[12, 20, 56, "#d9b867"], [84, 14, 36, "#e0533c"], [70, 62, 70, "#3ccf6e"], [24, 78, 34, "#e0533c"], [92, 48, 22, "#d9b867"], [46, 90, 26, "#3ccf6e"], [6, 52, 18, "#d9b867"]];
+    var dots = [[12, 20, 56, "#c9d2d6"], [84, 14, 36, "#e0533c"], [70, 62, 70, "#3ccf6e"], [24, 78, 34, "#e0533c"], [92, 48, 22, "#c9d2d6"], [46, 90, 26, "#3ccf6e"], [6, 52, 18, "#c9d2d6"]];
     var bk = dots.map(function (d, i) {
       return '<span class="bokeh" style="left:' + d[0] + '%;top:' + d[1] + '%;width:' + d[2] + 'px;height:' + d[2] + 'px;background:' + d[3] + ';animation-delay:-' + i * 3 + 's"></span>';
     }).join("");
@@ -215,7 +215,7 @@
         '<div class="cards">' + (H.areas || []).map(function (a, i) {
           return '<a class="card rise" href="' + esc(a.link) + '"><div class="num">0' + (i + 1) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.text) + '</p><span class="more">' + esc(a.linkText) + ' &rarr;</span></a>';
         }).join("") + '</div>' +
-        '<p class="closing rise" id="contact">' + esc(H.closing) + ' <a href="mailto:' + esc(P.email) + '">Start a conversation &rarr;</a></p>' +
+        '<p class="closing rise" id="contact">' + esc(H.closing) + ' <a href="mailto:' + esc(P.email) + '" data-contact>Start a conversation &rarr;</a></p>' +
       '</div></section>' +
       '<div class="foot">&copy; ' + new Date().getFullYear() + ' ' + esc(P.name) + ' · Figures come from independent research exercises and are not investment advice.</div>';
   }
@@ -442,6 +442,29 @@
     var tj = function () { var h = location.hash && document.getElementById(location.hash.slice(1)); if (h) setTimeout(function () { h.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); };
     window.addEventListener("hashchange", tj); setTimeout(tj, 150);
   }
+
+  /* ---------- Contact pop-up (works without an email app) ---------- */
+  function contactBox() {
+    var e = P.email || "";
+    var gm = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(e) + "&su=" + encodeURIComponent("Hello from your portfolio");
+    var html = '<p class="cintro">Happy to talk about internships, my models, or anything on this site. The quickest way is email.</p>' +
+      '<div class="crow"><div><div class="ck">Email</div><div class="cval">' + esc(e) + '</div></div><button class="btn sm" id="copyEmail">Copy</button></div>' +
+      '<div class="cbtns"><a class="btn sm gold" href="' + esc(gm) + '" target="_blank" rel="noopener">Write in Gmail &rarr;</a>' +
+      '<a class="btn sm" href="mailto:' + esc(e) + '">Email app</a>' +
+      (P.linkedin ? '<a class="btn sm" href="' + esc(P.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>' : '') + '</div>';
+    popup("Get in touch", html, "");
+    var b = document.getElementById("copyEmail");
+    if (b) b.addEventListener("click", function () {
+      var done = function () { b.textContent = "Copied \u2713"; setTimeout(function () { b.textContent = "Copy"; }, 2000); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(e).then(done, function () { fallback(); });
+      else fallback();
+      function fallback() { var t = document.createElement("textarea"); t.value = e; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (x) {} t.remove(); }
+    });
+  }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest("[data-contact]"); if (!a) return;
+    ev.preventDefault(); document.body.classList.remove("menu-open"); contactBox();
+  });
 
   /* ---------- Fade-in on scroll ---------- */
   var els = document.querySelectorAll(".rise");

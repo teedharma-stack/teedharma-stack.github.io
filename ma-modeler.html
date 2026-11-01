@@ -6,8 +6,8 @@
 <title>M&A Accretion / Dilution - Any Deal</title>
 <style>
   :root{
-    --bg:#07130C; --panel:#0F2618; --panel2:#153222; --ink:#ECE9DE;
-    --muted:#B9BFB2; --faint:#7C8A7A; --gold:#D9B867; --teal:#4AA36A;
+    --bg:#07130C; --panel:#0F2618; --panel2:#153222; --ink:#e9eded;
+    --muted:#B9BFB2; --faint:#7C8A7A; --gold:#c9d2d6; --teal:#4AA36A;
     --pos:#3BD08A; --neg:#FF6E6E; --line:rgba(255,255,255,.10);
     --sans:"Source Sans 3","Segoe UI",Roboto,-apple-system,BlinkMacSystemFont,Helvetica,Arial,sans-serif;
   }
@@ -29,7 +29,7 @@
   .field label{display:block;font-size:12px;color:var(--muted);margin-bottom:5px}
   .field input{width:100%;background:#0B1D12;border:1px solid var(--line);border-radius:9px;color:var(--ink);
     font-family:var(--sans);font-size:14px;padding:8px 11px;font-variant-numeric:tabular-nums}
-  .field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(217,184,103,.2)}
+  .field input:focus{outline:none;border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,210,214,.2)}
   .two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
   .ctrl{margin-bottom:16px}.ctrl:last-child{margin-bottom:0}
   .ctrl .row{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
@@ -203,7 +203,7 @@
     var v=g("verdict"),t,bg,fg;
     if(r.accr<0){t="Dilutive. The deal lowers the acquirer's earnings per share.";bg="rgba(255,110,110,.12)";fg="var(--neg)";}
     else if(r.lev>8){t="Accretive on paper, but recklessly levered at "+r.lev.toFixed(1)+"x, likely unfundable.";bg="rgba(255,110,110,.12)";fg="var(--neg)";}
-    else if(r.lev>5){t="Accretive, but aggressively levered at "+r.lev.toFixed(1)+"x, above the prudent ceiling.";bg="rgba(217,184,103,.1)";fg="var(--gold)";}
+    else if(r.lev>5){t="Accretive, but aggressively levered at "+r.lev.toFixed(1)+"x, above the prudent ceiling.";bg="rgba(201,210,214,.1)";fg="var(--gold)";}
     else{t="Accretive and within prudent leverage.";bg="rgba(59,208,138,.12)";fg="var(--pos)";}
     v.textContent=t; v.style.background=bg; v.style.color=fg;
   }
