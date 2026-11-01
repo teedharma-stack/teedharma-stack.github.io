@@ -379,11 +379,3 @@ body[data-bg="skyline"] .backdrop::after,body[data-bg="contour"] .backdrop::afte
   .fwtop .fwstatus{margin-left:0}
   .fwsteps{grid-template-columns:1fr}
 }
-
-/* contact pop-up */
-.sheet.memo .cintro{margin:0 0 18px}
-.crow{display:flex;align-items:center;gap:16px;padding:14px 16px;border:1px solid rgba(217,184,103,.35);border-radius:12px;background:rgba(0,0,0,.3)}
-.crow .ck{font-size:10px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--gold)}
-.crow .cval{font-size:17px;color:#fff;word-break:break-all}
-.crow .btn{margin-left:auto;flex:none}
-.cbtns{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 14px}
