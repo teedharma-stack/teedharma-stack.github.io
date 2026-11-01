@@ -174,15 +174,32 @@ window.SITE = {
     /* ---- Interactive tools ---- */
     {
       type: "tool", id: "lbo-modeler",
-      title: "Universal LBO Modeler", date: "2026-08-06",
-      summary: "Enter any company, drag the deal levers, watch IRR and MOIC update live.",
-      link: "tools.html"
+      title: "Universal LBO Modeler", tag: "Private Equity · LBO", date: "2026-08-06",
+      summary: "Model a leveraged buyout of any company. Enter revenue and EBITDA, drag the deal levers, and watch IRR and the money multiple update live, with a breakdown of where the returns come from.",
+      levers: [ "Entry multiple", "Leverage", "Exit multiple", "Revenue growth", "Hold period", "Interest rate" ],
+      file: "lbo-modeler.html", link: "tools.html#lbo-modeler"
     },
     {
       type: "tool", id: "ma-modeler",
-      title: "Universal M&A Modeler", date: "2026-08-10",
-      summary: "Accretion/dilution for any deal, with live synergy and financing levers.",
-      link: "tools.html"
+      title: "Universal M&A Modeler", tag: "Mergers & Acquisitions", date: "2026-08-10",
+      summary: "Model an acquisition of any target. Enter both companies, drag the cash/stock split and synergies, and watch the deal flip between accretive and dilutive, with a live leverage check against the prudence ceiling.",
+      levers: [ "Cash / stock split", "Synergies", "Offer premium", "Interest rate" ],
+      file: "ma-modeler.html", link: "tools.html#ma-modeler"
+    },
+
+    /* ---- AI framework (shows on the Tools page) ---- */
+    {
+      type: "framework", id: "bdms-ai",
+      title: "AI-Augmented Equity Research Workflow", company: "Bangkok Dusit Medical Services (BDMS)",
+      status: "In progress", date: "2026-10",
+      summary: "Can an AI workflow forecast earnings as well as real analysts? I am testing it on BDMS first. If it holds up, the goal is to point it at smaller SET companies that no analyst covers.",
+      steps: [
+        { t: "Forecast", d: "An AI-driven workflow predicts BDMS's 3Q26 earnings." },
+        { t: "Test", d: "Compare the forecast with the actual results and with real analysts' estimates." },
+        { t: "Stress-test", d: "Write the case for and against, so the conclusion has to survive both." },
+        { t: "Scale", d: "Apply the same workflow to small SET companies analysts don't cover." }
+      ],
+      link: "tools.html#ai"
     },
 
     /* ---- Certificates (extracurricular job simulations) ---- */

@@ -337,3 +337,45 @@ body[data-bg="contour"] .backdrop svg.soft,body[data-bg="ledger"] .backdrop svg.
 body[data-bg="glow"] .backdrop svg.soft{filter:blur(20px)}
 body[data-bg="skyline"] .backdrop::after,body[data-bg="contour"] .backdrop::after,body[data-bg="ledger"] .backdrop::after,body[data-bg="glow"] .backdrop::after{
   background:radial-gradient(60% 40% at 50% 0%,rgba(226,186,98,.14),rgba(226,186,98,.05) 55%,transparent 80%),radial-gradient(70% 60% at 50% 40%,rgba(4,10,6,.42),rgba(4,10,6,.55) 85%)}
+
+/* ============ Tools page ============ */
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(420px,1fr));gap:22px;margin-top:40px}
+.tcard{display:flex;flex-direction:column;border:1px solid var(--edge);border-radius:20px;overflow:hidden;background:var(--glass);backdrop-filter:blur(5px);transition:border-color .5s ease,transform .5s ease,box-shadow .5s ease;scroll-margin-top:30px}
+.tcard:hover{border-color:rgba(217,184,103,.6);transform:translateY(-4px);box-shadow:0 24px 54px rgba(0,0,0,.45)}
+.tprev{position:relative;height:260px;overflow:hidden;cursor:pointer;background:#07130c;border-bottom:1px solid rgba(255,255,255,.08)}
+.tprev iframe{position:absolute;top:0;left:0;width:1400px;height:900px;border:0;transform:scale(.42);transform-origin:0 0;pointer-events:none}
+.tprev::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 45%,rgba(5,12,8,.85));transition:background .5s}
+.tprev .tplay{position:absolute;left:50%;top:50%;z-index:2;transform:translate(-50%,-50%) scale(.92);opacity:0;padding:12px 22px;border-radius:12px;
+  background:linear-gradient(180deg,#f4e0a6,#dcb966 55%,#c29b49);color:#1d1606;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;transition:opacity .5s,transform .5s}
+.tprev:hover .tplay{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.tprev:hover::after{background:linear-gradient(180deg,rgba(5,12,8,.35),rgba(5,12,8,.85))}
+.tcard h3{margin:10px 0 8px;font-family:var(--serif);font-weight:700;font-size:25px;line-height:1.25;color:#fff}
+.tcard p{margin:0;font-size:15.5px;line-height:1.68;color:#cfd2c6}
+.levers{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin-top:18px}
+.levers .lk{margin-right:4px;font-size:10px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.levers .lv{padding:5px 11px;border-radius:20px;border:1px solid rgba(217,184,103,.3);background:rgba(217,184,103,.06);font-size:12.5px;color:#e6e2d2}
+.sheet.tool{width:min(1360px,100%);height:92vh}
+.sheet.tool .mbar a{margin-left:auto}
+.sheet.tool iframe{flex:1;width:100%;border:0;background:#07130c}
+
+.fwcard{margin-top:26px;padding:30px 32px;border:1px solid rgba(217,184,103,.38);border-radius:20px;background:var(--glass);backdrop-filter:blur(5px)}
+.fwtop{display:flex;align-items:flex-start;gap:18px}
+.fwtop h3{margin:8px 0 0;font-family:var(--serif);font-weight:700;font-size:26px;line-height:1.25;color:#fff}
+.fwstatus{margin-left:auto;flex:none;display:inline-flex;align-items:center;gap:9px;padding:8px 15px;border-radius:30px;border:1px solid rgba(217,184,103,.45);background:rgba(0,0,0,.35);font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#f1ecd9}
+.fwsum{margin:14px 0 0;max-width:780px;font-size:16px;line-height:1.7;color:#d3d5ca}
+.fwsteps{list-style:none;margin:26px 0 0;padding:0;display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.fwsteps li{position:relative;display:flex;gap:12px;padding:18px 16px;border:1px solid rgba(255,255,255,.12);border-radius:14px;background:rgba(0,0,0,.25)}
+.fwsteps li+li::before{content:"";position:absolute;left:-15px;top:50%;width:15px;height:1px;background:rgba(217,184,103,.5)}
+.fwsteps .sn{font-family:var(--serif);font-size:22px;line-height:1;color:var(--gold-hi)}
+.fwsteps b{display:block;font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:#fff}
+.fwsteps p{margin:6px 0 0;font-size:14px;line-height:1.55;color:#c9ccbf}
+@media (max-width:1100px){.fwsteps{grid-template-columns:repeat(2,1fr)}.fwsteps li+li::before{display:none}}
+@media (max-width:960px){
+  .tgrid{grid-template-columns:1fr}
+  .tprev{height:200px}
+  .tprev iframe{transform:scale(.3)}
+  .fwcard{padding:22px 18px}
+  .fwtop{flex-direction:column;gap:12px}
+  .fwtop .fwstatus{margin-left:0}
+  .fwsteps{grid-template-columns:1fr}
+}

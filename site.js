@@ -389,6 +389,60 @@
     window.addEventListener("hashchange", jump); setTimeout(jump, 150);
   }
 
+  /* ---------- Tools page ---------- */
+  var tp = document.getElementById("tools");
+  if (tp) {
+    var tools = (S.items || []).filter(function (x) { return x.type === "tool"; });
+    var fws = (S.items || []).filter(function (x) { return x.type === "framework"; });
+    var EXT = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 4h6v6"/><path d="M20 4 10 14"/><path d="M19 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1h5"/></svg>';
+    tp.innerHTML =
+      '<section class="phead"><div class="wrap">' +
+        '<div class="rise"><span class="eyebrow">Interactive Tools &amp; AI Framework</span></div>' +
+        '<h1 class="rise">Models you can <em>drive yourself.</em></h1>' +
+        '<p class="sub rise">The same math as my Excel models, rebuilt to run in the browser. Type in any company, drag the levers, and the answer updates as you move.</p>' +
+      '</div></section>' +
+      '<section class="wrap"><div class="tgrid">' + tools.map(function (t) {
+        return '<article class="tcard rise" id="' + esc(t.id) + '">' +
+          '<div class="tprev" data-tool="' + esc(t.id) + '"><iframe tabindex="-1" loading="lazy" title="" src="' + esc(t.file) + '"></iframe><span class="tplay">Launch &rarr;</span></div>' +
+          '<div class="pbody"><div class="pmeta"><span>' + esc(t.tag || "Interactive tool") + '</span><span>Live in browser</span></div>' +
+          '<h3>' + esc(t.title) + '</h3><p>' + esc(t.summary) + '</p>' +
+          ((t.levers || []).length ? '<div class="levers"><span class="lk">You control</span>' + t.levers.map(function (l) { return '<span class="lv">' + esc(l) + '</span>'; }).join("") + '</div>' : '') +
+          '<div class="pact"><button class="btn sm gold" data-tool="' + esc(t.id) + '">Launch modeler &rarr;</button>' +
+          '<a class="dl" href="' + esc(t.file) + '" target="_blank" rel="noopener">' + EXT + 'Open in new tab</a></div></div></article>';
+      }).join("") + '</div></section>' +
+      (fws.length ? '<section class="psec wrap" id="ai"><div class="shead rise"><h2>AI Framework</h2><span class="cnt">Research workflow</span></div>' +
+        fws.map(function (f) {
+          return '<article class="fwcard rise"><div class="fwtop"><div><div class="pmeta"><span>' + esc(f.company || "") + '</span></div><h3>' + esc(f.title) + '</h3></div>' +
+            (f.status ? '<span class="fwstatus"><span class="dot"></span>' + esc(f.status) + '</span>' : '') + '</div>' +
+            '<p class="fwsum">' + esc(f.summary) + '</p>' +
+            '<ol class="fwsteps">' + (f.steps || []).map(function (st, i) {
+              return '<li><span class="sn">0' + (i + 1) + '</span><div><b>' + esc(st.t) + '</b><p>' + esc(st.d) + '</p></div></li>';
+            }).join("") + '</ol></article>';
+        }).join("") + '</section>' : '') +
+      '<div class="foot">Illustrative models for learning and discussion. Not investment advice.</div>';
+
+    var openTool = function (id) {
+      var t = tools.filter(function (x) { return x.id === id; })[0]; if (!t) return;
+      if (window.matchMedia("(max-width: 700px)").matches) { window.open(t.file, "_blank"); return; }
+      var m = document.createElement("div");
+      m.className = "modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+      m.innerHTML = '<div class="sheet tool"><div class="mbar"><span>' + esc(t.title) + '</span>' +
+        '<a href="' + esc(t.file) + '" target="_blank" rel="noopener">' + EXT + 'New tab</a>' +
+        '<button class="mx" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
+        '<iframe title="' + esc(t.title) + '" src="' + esc(t.file) + '"></iframe></div>';
+      document.body.appendChild(m);
+      var close = function () { m.classList.remove("open"); document.body.style.overflow = ""; setTimeout(function () { m.remove(); }, 400); document.removeEventListener("keydown", key); };
+      var key = function (e) { if (e.key === "Escape") close(); };
+      m.addEventListener("click", function (e) { if (e.target === m) close(); });
+      m.querySelector(".mx").addEventListener("click", close);
+      document.addEventListener("keydown", key);
+      requestAnimationFrame(function () { m.classList.add("open"); document.body.style.overflow = "hidden"; });
+    };
+    tp.addEventListener("click", function (e) { var b = e.target.closest("[data-tool]"); if (b) openTool(b.getAttribute("data-tool")); });
+    var tj = function () { var h = location.hash && document.getElementById(location.hash.slice(1)); if (h) setTimeout(function () { h.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); };
+    window.addEventListener("hashchange", tj); setTimeout(tj, 150);
+  }
+
   /* ---------- Fade-in on scroll ---------- */
   var els = document.querySelectorAll(".rise");
   if ("IntersectionObserver" in window) {
