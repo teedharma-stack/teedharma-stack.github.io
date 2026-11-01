@@ -57,7 +57,7 @@
     '<div class="social">' +
       (P.linkedin ? '<a href="' + esc(P.linkedin) + '" target="_blank" rel="noopener" aria-label="LinkedIn" title="LinkedIn">' + I.li + '</a>' : '') +
       (P.github ? '<a href="' + esc(P.github) + '" target="_blank" rel="noopener" aria-label="GitHub" title="GitHub">' + I.gh + '</a>' : '') +
-      (P.email ? '<a href="mailto:' + esc(P.email) + '" aria-label="Email" title="Email">' + I.mail + '</a>' : '') +
+      (P.email ? '<a href="mailto:' + esc(P.email) + '" data-contact aria-label="Email" title="Email">' + I.mail + '</a>' : '') +
     '</div>' +
     '<div class="scopy">&copy; ' + new Date().getFullYear() + ' ' + esc(P.name) + '</div>';
 
@@ -215,7 +215,7 @@
         '<div class="cards">' + (H.areas || []).map(function (a, i) {
           return '<a class="card rise" href="' + esc(a.link) + '"><div class="num">0' + (i + 1) + '</div><h3>' + esc(a.title) + '</h3><p>' + esc(a.text) + '</p><span class="more">' + esc(a.linkText) + ' &rarr;</span></a>';
         }).join("") + '</div>' +
-        '<p class="closing rise" id="contact">' + esc(H.closing) + ' <a href="mailto:' + esc(P.email) + '">Start a conversation &rarr;</a></p>' +
+        '<p class="closing rise" id="contact">' + esc(H.closing) + ' <a href="mailto:' + esc(P.email) + '" data-contact>Start a conversation &rarr;</a></p>' +
       '</div></section>' +
       '<div class="foot">&copy; ' + new Date().getFullYear() + ' ' + esc(P.name) + ' · Figures come from independent research exercises and are not investment advice.</div>';
   }
@@ -442,6 +442,29 @@
     var tj = function () { var h = location.hash && document.getElementById(location.hash.slice(1)); if (h) setTimeout(function () { h.scrollIntoView({ behavior: "smooth", block: "start" }); }, 80); };
     window.addEventListener("hashchange", tj); setTimeout(tj, 150);
   }
+
+  /* ---------- Contact pop-up (works without an email app) ---------- */
+  function contactBox() {
+    var e = P.email || "";
+    var gm = "https://mail.google.com/mail/?view=cm&fs=1&to=" + encodeURIComponent(e) + "&su=" + encodeURIComponent("Hello from your portfolio");
+    var html = '<p class="cintro">Happy to talk about internships, my models, or anything on this site. The quickest way is email.</p>' +
+      '<div class="crow"><div><div class="ck">Email</div><div class="cval">' + esc(e) + '</div></div><button class="btn sm" id="copyEmail">Copy</button></div>' +
+      '<div class="cbtns"><a class="btn sm gold" href="' + esc(gm) + '" target="_blank" rel="noopener">Write in Gmail &rarr;</a>' +
+      '<a class="btn sm" href="mailto:' + esc(e) + '">Email app</a>' +
+      (P.linkedin ? '<a class="btn sm" href="' + esc(P.linkedin) + '" target="_blank" rel="noopener">LinkedIn</a>' : '') + '</div>';
+    popup("Get in touch", html, "");
+    var b = document.getElementById("copyEmail");
+    if (b) b.addEventListener("click", function () {
+      var done = function () { b.textContent = "Copied \u2713"; setTimeout(function () { b.textContent = "Copy"; }, 2000); };
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(e).then(done, function () { fallback(); });
+      else fallback();
+      function fallback() { var t = document.createElement("textarea"); t.value = e; document.body.appendChild(t); t.select(); try { document.execCommand("copy"); done(); } catch (x) {} t.remove(); }
+    });
+  }
+  document.addEventListener("click", function (ev) {
+    var a = ev.target.closest("[data-contact]"); if (!a) return;
+    ev.preventDefault(); document.body.classList.remove("menu-open"); contactBox();
+  });
 
   /* ---------- Fade-in on scroll ---------- */
   var els = document.querySelectorAll(".rise");
