@@ -96,11 +96,85 @@
       }
     });
     svg += '</svg>';
+    /* Portfolio pages: out-of-focus financial district at night */
+    if (document.body.getAttribute("data-bg") === "city") {
+      svg = '<svg class="chart city" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMax slice">' +
+        '<defs><linearGradient id="sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#030906"/><stop offset=".5" stop-color="#0a1f13"/><stop offset="1" stop-color="#1b4a2c"/></linearGradient></defs>' +
+        '<rect width="' + W + '" height="' + H + '" fill="url(#sky)"/>';
+      var layers = [ { base: 520, hmin: 120, hmax: 330, wmin: 70, wmax: 140, fill: "#1a3f29", lit: .2, a: .6 },
+                     { base: 700, hmin: 200, hmax: 520, wmin: 90, wmax: 170, fill: "#10301d", lit: .28, a: .85 },
+                     { base: 1000, hmin: 300, hmax: 760, wmin: 120, wmax: 230, fill: "#071a0e", lit: .36, a: 1 } ];
+      layers.forEach(function (L) {
+        var x = -40;
+        while (x < W) {
+          var bw = L.wmin + r() * (L.wmax - L.wmin), bh = L.hmin + r() * (L.hmax - L.hmin), top = L.base - bh;
+          svg += '<rect x="' + x + '" y="' + top + '" width="' + bw + '" height="' + (H - top) + '" fill="' + L.fill + '"/>';
+          if (r() < .3) svg += '<rect x="' + (x + bw * .42) + '" y="' + (top - 40) + '" width="' + bw * .16 + '" height="40" fill="' + L.fill + '"/>';
+          for (var wy = top + 14; wy < Math.min(L.base, H) - 10; wy += 18) {
+            for (var wx = x + 10; wx < x + bw - 12; wx += 15) {
+              if (r() < L.lit) {
+                var c = r() < .72 ? "#e9c477" : (r() < .6 ? "#f4ead0" : "#5fd18a");
+                svg += '<rect x="' + wx + '" y="' + wy + '" width="8" height="10" fill="' + c + '" opacity="' + (L.a * (.35 + r() * .6)).toFixed(2) + '"/>';
+              }
+            }
+          }
+          x += bw + 6 + r() * 26;
+        }
+      });
+      svg += '</svg>';
+    }
+    /* Calmer background options: data-bg="skyline" | "contour" | "ledger" | "glow" */
+    var bgType = document.body.getAttribute("data-bg");
+    if (bgType === "skyline") {
+      svg = '<svg class="chart soft" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMax slice">' +
+        '<defs><linearGradient id="sk2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#040b07"/><stop offset=".6" stop-color="#0b2014"/><stop offset="1" stop-color="#173d26"/></linearGradient></defs>' +
+        '<rect width="' + W + '" height="' + H + '" fill="url(#sk2)"/>';
+      [{ base: 640, hmin: 140, hmax: 320, fill: "#17402a", lit: .09 }, { base: 1000, hmin: 280, hmax: 560, fill: "#0b1f13", lit: .13 }].forEach(function (L) {
+        var x = -40;
+        while (x < W) {
+          var bw = 110 + r() * 150, bh = L.hmin + r() * (L.hmax - L.hmin), top = L.base - bh;
+          svg += '<rect x="' + x + '" y="' + top + '" width="' + bw + '" height="' + (H - top) + '" fill="' + L.fill + '"/>';
+          for (var wy = top + 20; wy < Math.min(L.base, H) - 20; wy += 26) for (var wx = x + 14; wx < x + bw - 16; wx += 22)
+            if (r() < L.lit) svg += '<rect x="' + wx + '" y="' + wy + '" width="10" height="12" fill="#e9c477" opacity="' + (.35 + r() * .4).toFixed(2) + '"/>';
+          x += bw + 10 + r() * 30;
+        }
+      });
+      svg += '</svg>';
+    } else if (bgType === "contour") {
+      svg = '<svg class="chart soft" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice"><rect width="' + W + '" height="' + H + '" fill="#06110a"/>';
+      for (var k = 0; k < 26; k++) {
+        var d = "", y0 = 40 + k * 38, amp = 30 + k * 2.2, ph = k * .35;
+        for (var xx = 0; xx <= W; xx += 20) {
+          var yy = y0 + Math.sin(xx / 260 + ph) * amp + Math.sin(xx / 97 + k) * 9;
+          d += (xx ? " L" : "M") + xx + " " + yy.toFixed(1);
+        }
+        svg += '<path d="' + d + '" fill="none" stroke="' + (k % 5 === 0 ? "#d9b867" : "#3d8a58") + '" stroke-width="' + (k % 5 === 0 ? 1.6 : 1.1) + '" opacity="' + (k % 5 === 0 ? .6 : .55) + '"/>';
+      }
+      svg += '</svg>';
+    } else if (bgType === "ledger") {
+      svg = '<svg class="chart soft" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice"><rect width="' + W + '" height="' + H + '" fill="#06110a"/>';
+      for (var gx = 0; gx <= W; gx += 40) svg += '<line x1="' + gx + '" x2="' + gx + '" y1="0" y2="' + H + '" stroke="#2a5a3d" stroke-width="' + (gx % 200 ? .8 : 1.6) + '"/>';
+      for (var gy = 0; gy <= H; gy += 40) svg += '<line y1="' + gy + '" y2="' + gy + '" x1="0" x2="' + W + '" stroke="#2a5a3d" stroke-width="' + (gy % 200 ? .8 : 1.6) + '"/>';
+      var pts = [], pv = 780;
+      for (var px = 0; px <= W; px += 40) { pv += (r() - .62) * 46; pv = Math.max(160, Math.min(860, pv)); pts.push(px + "," + pv.toFixed(0)); }
+      svg += '<polyline points="0,' + H + ' ' + pts.join(" ") + ' ' + W + ',' + H + '" fill="#d9b867" opacity=".09"/>';
+      svg += '<polyline points="' + pts.join(" ") + '" fill="none" stroke="#d9b867" stroke-width="3" opacity=".75"/>';
+      svg += '</svg>';
+    } else if (bgType === "glow") {
+      svg = '<svg class="chart soft" viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="xMidYMid slice"><defs>' +
+        '<radialGradient id="g1"><stop offset="0" stop-color="#36a056" stop-opacity=".75"/><stop offset="1" stop-color="#2f8a4a" stop-opacity="0"/></radialGradient>' +
+        '<radialGradient id="g2"><stop offset="0" stop-color="#d9b867" stop-opacity=".4"/><stop offset="1" stop-color="#d9b867" stop-opacity="0"/></radialGradient>' +
+        '<radialGradient id="g3"><stop offset="0" stop-color="#23807a" stop-opacity=".6"/><stop offset="1" stop-color="#1c5e5a" stop-opacity="0"/></radialGradient></defs>' +
+        '<rect width="' + W + '" height="' + H + '" fill="#05100a"/>' +
+        '<ellipse cx="300" cy="820" rx="700" ry="420" fill="url(#g1)"/><ellipse cx="1300" cy="180" rx="620" ry="380" fill="url(#g3)"/>' +
+        '<ellipse cx="900" cy="560" rx="520" ry="300" fill="url(#g2)"/><ellipse cx="1500" cy="900" rx="420" ry="260" fill="url(#g1)"/></svg>';
+    }
+    if (bgType === "skyline" || bgType === "contour" || bgType === "ledger" || bgType === "glow") { bd.className += " calm"; }
     var dots = [[12, 20, 56, "#d9b867"], [84, 14, 36, "#e0533c"], [70, 62, 70, "#3ccf6e"], [24, 78, 34, "#e0533c"], [92, 48, 22, "#d9b867"], [46, 90, 26, "#3ccf6e"], [6, 52, 18, "#d9b867"]];
     var bk = dots.map(function (d, i) {
       return '<span class="bokeh" style="left:' + d[0] + '%;top:' + d[1] + '%;width:' + d[2] + 'px;height:' + d[2] + 'px;background:' + d[3] + ';animation-delay:-' + i * 3 + 's"></span>';
     }).join("");
-    bd.innerHTML = svg + bk;
+    bd.innerHTML = svg + (/calm/.test(bd.className) ? '' : bk);
     document.body.insertBefore(bd, document.body.firstChild);
   })();
 
@@ -186,6 +260,133 @@
       modal.querySelector(".mx").addEventListener("click", closeM);
       document.addEventListener("keydown", function (e) { if (e.key === "Escape") closeM(); });
     }
+  }
+
+  /* ---------- Shared pop-up (memos) ---------- */
+  function popup(title, html, footer) {
+    var m = document.createElement("div");
+    m.className = "modal"; m.setAttribute("role", "dialog"); m.setAttribute("aria-modal", "true");
+    m.innerHTML = '<div class="sheet memo"><div class="mbar"><span>' + esc(title) + '</span>' +
+      '<button class="mx" aria-label="Close"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6 6 18"/></svg></button></div>' +
+      '<div class="mbody">' + html + '</div>' + (footer ? '<div class="mfoot">' + footer + '</div>' : '') + '</div>';
+    document.body.appendChild(m);
+    var close = function () { m.classList.remove("open"); document.body.style.overflow = ""; setTimeout(function () { m.remove(); }, 400); document.removeEventListener("keydown", key); };
+    var key = function (e) { if (e.key === "Escape") close(); };
+    m.addEventListener("click", function (e) { if (e.target === m) close(); });
+    m.querySelector(".mx").addEventListener("click", close);
+    document.addEventListener("keydown", key);
+    requestAnimationFrame(function () { m.classList.add("open"); document.body.style.overflow = "hidden"; });
+  }
+
+  /* ---------- Portfolio page ---------- */
+  var pf = document.getElementById("portfolio");
+  if (pf) {
+    var DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/></svg>';
+    var work = items.filter(function (x) { return x.type === "project" || x.type === "memo" || x.type === "model"; });
+    var certs = items.filter(function (x) { return x.type === "certificate"; });
+    var MON = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    var fdate = function (d) { var p = String(d || "").split("-"); return p.length > 1 ? (p[2] ? +p[2] + " " : "") + MON[+p[1] - 1] + " " + p[0] : (d || ""); };
+    var sections = [
+      { id: "deals", name: "Deals & Valuation", sub: "M&A and leveraged buyouts: would a buyer actually make money?" },
+      { id: "research", name: "Equity Research", sub: "What a company is worth, and whether the market agrees." },
+      { id: "quant", name: "Quant & Data", sub: "Original datasets and the patterns in them." }
+    ];
+    var known = sections.map(function (s) { return s.name; });
+    var other = work.filter(function (x) { return known.indexOf(x.category) < 0; });
+    if (other.length) sections.push({ id: "other", name: "More work", sub: "" });
+    var inSec = function (s) { return work.filter(function (x) { return s.id === "other" ? known.indexOf(x.category) < 0 : x.category === s.name; }); };
+
+    var media = function (x, big) {
+      var top = (x.stats && x.stats[0]) || { v: x.category || "", k: "" };
+      var fb = '<div class="noimg"><span class="nv">' + esc(top.v) + '</span><span class="nk">' + esc(top.k) + '</span></div>';
+      if (!x.image) return '<div class="pmedia' + (big ? " big" : "") + '">' + fb + '</div>';
+      return '<div class="pmedia' + (big ? " big" : "") + '"><img loading="lazy" src="' + esc(x.image) + '" alt="" onerror="this.parentNode.innerHTML=this.parentNode.getAttribute(\'data-fb\')"></div>';
+    };
+    var withFb = function (html, x) {
+      var top = (x.stats && x.stats[0]) || { v: x.category || "", k: "" };
+      var fb = '<div class="noimg"><span class="nv">' + esc(top.v) + '</span><span class="nk">' + esc(top.k) + '</span></div>';
+      return html.replace('<div class="pmedia', '<div data-fb="' + esc(fb) + '" class="pmedia');
+    };
+    var statsHtml = function (x) {
+      return (x.stats && x.stats.length) ? '<div class="pstats">' + x.stats.slice(0, 3).map(function (s) { return '<div><div class="v">' + esc(s.v) + '</div><div class="k">' + esc(s.k) + '</div></div>'; }).join("") + '</div>' : "";
+    };
+    var actions = function (x) {
+      return '<div class="pact">' +
+        (x.memo ? '<button class="btn sm gold" data-memo="' + esc(x.id) + '">Read memo &rarr;</button>' : '') +
+        (x.files || []).map(function (f) { return '<a class="dl" href="' + esc(f.href) + '" download>' + DL + esc(f.label) + '</a>'; }).join("") +
+      '</div>';
+    };
+    var card = function (x) {
+      return '<article class="pcard rise" id="proj-' + esc(x.id) + '" data-date="' + esc(x.date) + '" data-title="' + esc(x.title) + '">' +
+        withFb(media(x), x) +
+        '<div class="pbody"><div class="pmeta"><span>' + esc(x.category) + '</span><span>' + esc(fdate(x.date)) + '</span></div>' +
+        '<h3>' + esc(x.title) + '</h3><p>' + esc(x.summary) + '</p>' + statsHtml(x) + actions(x) + '</div></article>';
+    };
+    var feat = work[0];
+
+    pf.innerHTML =
+      '<section class="phead"><div class="wrap">' +
+        '<div class="rise"><span class="eyebrow">Portfolio</span></div>' +
+        '<h1 class="rise">Models and memos on <em>real companies.</em></h1>' +
+        '<p class="sub rise">Every project is a working model plus a written view. Open the memo for the short version, or download the files and check my numbers.</p>' +
+        '<div class="pbar rise"><div class="chips">' +
+          '<button class="chip on" data-f="all">All</button>' +
+          sections.filter(function (s) { return inSec(s).length; }).map(function (s) { return '<button class="chip" data-f="' + s.id + '">' + esc(s.name) + '</button>'; }).join("") +
+        '</div><label class="sort">Sort <select id="psort"><option value="new">Newest</option><option value="old">Oldest</option><option value="az">A-Z</option></select></label></div>' +
+      '</div></section>' +
+      (feat ? '<section class="wrap"><div class="flabel rise">Latest project</div>' +
+        '<article class="feat rise">' + withFb(media(feat, true), feat) +
+        '<div class="pbody"><div class="pmeta"><span>' + esc(feat.category) + '</span><span>' + esc(fdate(feat.date)) + '</span></div>' +
+        '<h2>' + esc(feat.title) + '</h2><p>' + esc(feat.summary) + '</p>' + statsHtml(feat) + actions(feat) + '</div></article></section>' : '') +
+      sections.map(function (s) {
+        var list = inSec(s); if (!list.length) return "";
+        return '<section class="psec wrap" id="' + s.id + '" data-sec="' + s.id + '"><div class="shead rise"><h2>' + esc(s.name) + '</h2><span class="cnt">' + list.length + (list.length > 1 ? " projects" : " project") + '</span></div>' +
+          (s.sub ? '<p class="ssub rise">' + esc(s.sub) + '</p>' : '') +
+          '<div class="pgrid">' + list.map(card).join("") + '</div></section>';
+      }).join("") +
+      (certs.length ? '<section class="psec wrap" id="certificates" data-sec="certificates"><div class="shead rise"><h2>Certificates</h2><span class="cnt">Extracurricular job simulations</span></div>' +
+        '<div class="cgrid">' + certs.map(function (c) {
+          return '<div class="ccard rise"><div class="cbadge">' + I.cv + '</div><div><div class="pmeta"><span>' + esc(c.issuer || "") + ' · Job simulation</span><span>' + esc(fdate(c.date)) + '</span></div>' +
+            '<h3>' + esc(c.title) + '</h3><p>' + esc(c.summary) + '</p>' + (c.link ? '<a class="dl" href="' + esc(c.link) + '" target="_blank" rel="noopener">View certificate &rarr;</a>' : '') + '</div></div>';
+        }).join("") + '</div></section>' : '') +
+      '<div class="foot">Figures come from independent research exercises and are not investment advice.</div>';
+
+    /* filter chips */
+    pf.querySelectorAll(".chip").forEach(function (c) {
+      c.addEventListener("click", function () {
+        pf.querySelectorAll(".chip").forEach(function (o) { o.classList.toggle("on", o === c); });
+        var f = c.getAttribute("data-f");
+        pf.querySelectorAll(".psec[data-sec]").forEach(function (s) { s.style.display = (f === "all" || s.getAttribute("data-sec") === f || s.id === "certificates" && f === "all") ? "" : "none"; });
+        var fe = pf.querySelector(".feat"); if (fe) fe.parentNode.style.display = f === "all" ? "" : "none";
+      });
+    });
+    /* sort */
+    document.getElementById("psort").addEventListener("change", function () {
+      var v = this.value;
+      pf.querySelectorAll(".pgrid").forEach(function (g) {
+        Array.prototype.slice.call(g.children).sort(function (a, b) {
+          if (v === "az") return a.getAttribute("data-title").localeCompare(b.getAttribute("data-title"));
+          var d = a.getAttribute("data-date").localeCompare(b.getAttribute("data-date"));
+          return v === "old" ? d : -d;
+        }).forEach(function (el) { g.appendChild(el); });
+      });
+    });
+    /* memo pop-ups */
+    pf.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-memo]"); if (!b) return;
+      var x = work.filter(function (w) { return w.id === b.getAttribute("data-memo"); })[0]; if (!x) return;
+      var foot = (x.files || []).map(function (f) { return '<a class="dl" href="' + esc(f.href) + '" download>' + DL + esc(f.label) + '</a>'; }).join("") +
+        '<span class="disc">Independent academic analysis. Not investment advice.</span>';
+      popup(x.title, x.memo, foot);
+    });
+    /* jump to a project or section from a link */
+    var jump = function () {
+      var h = location.hash && document.getElementById(location.hash.slice(1));
+      if (!h) return;
+      pf.querySelectorAll(".chip")[0].click();
+      setTimeout(function () { h.scrollIntoView({ behavior: "smooth", block: h.classList.contains("pcard") ? "center" : "start" }); if (h.classList.contains("pcard")) { h.classList.add("in", "flash"); setTimeout(function () { h.classList.remove("flash"); }, 2200); } }, 60);
+    };
+    window.addEventListener("hashchange", jump); setTimeout(jump, 150);
   }
 
   /* ---------- Fade-in on scroll ---------- */
