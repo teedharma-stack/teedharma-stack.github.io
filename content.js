@@ -25,6 +25,8 @@
      files: [ { label: "Model (xlsx)", href: "files/My_Model.xlsx" } ],  // optional
      image: "images/my_card.png",           // optional
      link: "projects.html#proj-my-new-project",
+     // optional extras:  badge: "Live test",  tags: [ "Tag one", "Tag two" ],
+     // page: "my-case-study.html" (adds a "Read the case study" button),  tone: "bad" or "good" on a stat colours it red or green
      memo: "<p><b>View:</b> My main point.</p><p><b>Risks:</b> What could go wrong.</p>"   // optional: short memo shown in a pop-up
    },
 
@@ -100,6 +102,18 @@ window.SITE = {
 
   /* ---------- All your work. Newest first is automatic. ---------- */
   items: [
+    {
+      type: "project", id: "bdms",
+      title: "AI Forecast Test: Bangkok Dusit Medical Services",
+      date: "2026-11-16", category: "Equity Research",
+      summary: "Locked an AI forecast before results and scored it against analysts. Revenue within 0.34%.",
+      badge: "Live test",
+      tags: [ "Equity research", "AI workflow", "Forecasting", "Thailand / SET" ],
+      stats: [ { v: "0.34%", k: "revenue error", tone: "good" }, { v: "0.17%", k: "EBITDA error", tone: "good" }, { v: "3.33%", k: "core profit error", tone: "bad" } ],
+      image: "",
+      page: "bdms-ai-forecast-test.html",
+      link: "bdms-ai-forecast-test.html"
+    },
     {
       type: "project", id: "kmb",
       title: "Kimberly-Clark / Kenvue: Accretion / Dilution",

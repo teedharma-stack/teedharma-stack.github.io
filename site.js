@@ -308,19 +308,24 @@
       return html.replace('<div class="pmedia', '<div data-fb="' + esc(fb) + '" class="pmedia');
     };
     var statsHtml = function (x) {
-      return (x.stats && x.stats.length) ? '<div class="pstats">' + x.stats.slice(0, 3).map(function (s) { return '<div><div class="v">' + esc(s.v) + '</div><div class="k">' + esc(s.k) + '</div></div>'; }).join("") + '</div>' : "";
+      return (x.stats && x.stats.length) ? '<div class="pstats">' + x.stats.slice(0, 3).map(function (s) { return '<div><div class="v' + (s.tone ? " " + esc(s.tone) : "") + '">' + esc(s.v) + '</div><div class="k">' + esc(s.k) + '</div></div>'; }).join("") + '</div>' : "";
     };
+    var tagsHtml = function (x) {
+      return (x.tags && x.tags.length) ? '<div class="ptags">' + x.tags.map(function (t) { return '<span>' + esc(t) + '</span>'; }).join("") + '</div>' : "";
+    };
+    var badgeHtml = function (x) { return x.badge ? '<span class="pbadge"><span class="dot"></span>' + esc(x.badge) + '</span>' : ""; };
     var actions = function (x) {
       return '<div class="pact">' +
+        (x.page ? '<a class="btn sm gold" href="' + esc(x.page) + '">Read the case study &rarr;</a>' : '') +
         (x.memo ? '<button class="btn sm gold" data-memo="' + esc(x.id) + '">Read memo &rarr;</button>' : '') +
         (x.files || []).map(function (f) { return '<a class="dl" href="' + esc(f.href) + '" download>' + DL + esc(f.label) + '</a>'; }).join("") +
       '</div>';
     };
     var card = function (x) {
       return '<article class="pcard rise" id="proj-' + esc(x.id) + '" data-date="' + esc(x.date) + '" data-title="' + esc(x.title) + '">' +
-        withFb(media(x), x) +
+        badgeHtml(x) + withFb(media(x), x) +
         '<div class="pbody"><div class="pmeta"><span>' + esc(x.category) + '</span><span>' + esc(fdate(x.date)) + '</span></div>' +
-        '<h3>' + esc(x.title) + '</h3><p>' + esc(x.summary) + '</p>' + statsHtml(x) + actions(x) + '</div></article>';
+        '<h3>' + esc(x.title) + '</h3><p>' + esc(x.summary) + '</p>' + tagsHtml(x) + statsHtml(x) + actions(x) + '</div></article>';
     };
     var feat = work[0];
 
@@ -335,9 +340,9 @@
         '</div><label class="sort">Sort <select id="psort"><option value="new">Newest</option><option value="old">Oldest</option><option value="az">A-Z</option></select></label></div>' +
       '</div></section>' +
       (feat ? '<section class="wrap"><div class="flabel rise">Latest project</div>' +
-        '<article class="feat rise">' + withFb(media(feat, true), feat) +
+        '<article class="feat rise">' + badgeHtml(feat) + withFb(media(feat, true), feat) +
         '<div class="pbody"><div class="pmeta"><span>' + esc(feat.category) + '</span><span>' + esc(fdate(feat.date)) + '</span></div>' +
-        '<h2>' + esc(feat.title) + '</h2><p>' + esc(feat.summary) + '</p>' + statsHtml(feat) + actions(feat) + '</div></article></section>' : '') +
+        '<h2>' + esc(feat.title) + '</h2><p>' + esc(feat.summary) + '</p>' + tagsHtml(feat) + statsHtml(feat) + actions(feat) + '</div></article></section>' : '') +
       sections.map(function (s) {
         var list = inSec(s); if (!list.length) return "";
         return '<section class="psec wrap" id="' + s.id + '" data-sec="' + s.id + '"><div class="shead rise"><h2>' + esc(s.name) + '</h2><span class="cnt">' + list.length + (list.length > 1 ? " projects" : " project") + '</span></div>' +

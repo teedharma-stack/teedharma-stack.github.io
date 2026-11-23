@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Forecast Test: BDMS · Teedharma Somsuk</title>
+<meta name="description" content="I built an AI-assisted research workflow, locked its forecast before Bangkok Dusit Medical Services reported 3Q26, and scored it against professional analysts. Revenue came within 0.34%.">
+<meta property="og:type" content="article">
+<meta property="og:title" content="An AI forecast BDMS's quarter almost exactly, then missed profit on one tax line">
+<meta property="og:description" content="AI-assisted forecast locked before results and scored against analysts: revenue within 0.34%, EBITDA within 0.17%, core profit off 3.33%. Passed a pre-set rule after one quarter.">
+<meta property="og:url" content="https://teedharma-stack.github.io/bdms-ai-forecast-test.html">
+<meta name="twitter:card" content="summary">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400..700;1,400..700&family=Source+Sans+3:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+/* Case study page. Colours follow the site: champagne = AI, grey = analysts, red = the miss, green = the pass. */
+.case{--ai:var(--gold);--an:#8f978a;--miss:#ff8a7d;--pass:#7fdca6;--ln:rgba(255,255,255,.12)}
+.case .wrap{max-width:1080px}
+.cs{padding:56px 0 0}
+.case h2{margin:0 0 12px;font-family:var(--serif);font-weight:700;font-size:clamp(26px,3vw,34px);line-height:1.2;color:#fff}
+.case h3{margin:0 0 6px;font-size:17px;color:#fff}
+.case p{margin:0 0 12px;max-width:68ch;font-size:16px;line-height:1.7;color:#d3d5ca}
+.case .note{font-size:14px;color:#a9ae9f;line-height:1.6}
+.case a{color:var(--gold-hi)}
+.num{font-variant-numeric:tabular-nums}
+.panel{border:1px solid var(--edge);border-radius:18px;background:var(--glass);backdrop-filter:blur(5px)}
+
+/* hero */
+.cs-hero{padding:56px 0 0}
+.crumb{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#cfd2c6;text-decoration:none}
+.case a.crumb{color:#cfd2c6}
+.case a.crumb:hover{color:var(--gold-hi)}
+.status{display:inline-flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:22px;padding:8px 16px;border-radius:30px;border:1px solid rgba(127,220,166,.45);background:rgba(0,0,0,.35);font-size:13.5px;font-weight:600;color:#eef2ea}
+.status .sep{color:#6f7a6b}
+.cs-hero h1{margin:20px 0 16px;max-width:22ch;font-family:var(--serif);font-weight:700;font-size:clamp(32px,4.4vw,54px);line-height:1.1;color:#fff;text-wrap:balance}
+.cs-hero h1 em{font-style:italic;background:linear-gradient(180deg,var(--gold-hi) 10%,var(--gold) 60%,var(--gold-deep));-webkit-background-clip:text;background-clip:text;color:transparent}
+.lede{font-size:18px!important;color:#dcdcd0!important}
+.by{font-size:14px!important;color:#a9ae9f!important}
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));margin-top:28px;overflow:hidden}
+.kpi{padding:20px 22px}
+.kpi+.kpi{border-left:1px solid var(--ln)}
+.kpi .v{font-family:var(--serif);font-size:clamp(30px,3.4vw,40px);line-height:1.1;font-variant-numeric:tabular-nums;white-space:nowrap}
+.kpi .v.ok{color:var(--pass)}
+.kpi .v.bad{color:var(--miss)}
+.kpi .k{margin-top:6px;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#cfd1c4;line-height:1.5}
+
+/* result sheet */
+.rsheet{margin-top:22px;overflow:hidden}
+.sheet-top{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;padding:14px 20px;border-bottom:1px solid var(--ln);font-size:13.5px;color:#bfc3b7}
+.sheet-top b{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px}
+.legend i{display:inline-block;width:11px;height:11px;border-radius:50%;vertical-align:-1px;margin-right:6px}
+.qhead{padding:10px 20px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);background:rgba(0,0,0,.2);border-bottom:1px solid var(--ln)}
+.row{display:grid;grid-template-columns:minmax(150px,210px) minmax(0,1fr);gap:18px;padding:16px 20px;border-bottom:1px solid var(--ln)}
+.row h3{margin:0;font-size:16px}
+.row .nums{font-size:13.5px;color:#a9ae9f;font-variant-numeric:tabular-nums;line-height:1.5}
+.track{position:relative;height:84px;margin:0 6px}
+.axis{position:absolute;left:0;right:0;top:42px;height:1px;background:rgba(255,255,255,.18)}
+.grid{position:absolute;top:30px;bottom:30px;width:1px;background:rgba(255,255,255,.07)}
+.zero{position:absolute;top:22px;bottom:22px;width:2px;margin-left:-1px;background:#fff}
+.mk{position:absolute;top:42px;width:16px;height:16px;margin:-8px 0 0 -8px;border-radius:50%;border:3px solid #0b1710}
+.mk.ai{background:var(--ai);box-shadow:0 0 12px rgba(227,207,160,.5)}
+.mk.an{background:var(--an)}
+.lab{position:absolute;font-size:13px;white-space:nowrap;transform:translateX(-50%);font-variant-numeric:tabular-nums}
+.lab.l{transform:none}.lab.r{transform:translateX(-100%)}
+.lab.ai{top:2px;color:var(--ai);font-weight:700}
+.lab.an{top:62px;color:#b9bdb1}
+.tickrow{padding-top:6px;padding-bottom:14px;border-bottom:0}
+.ticks{position:relative;height:18px;margin:0 6px;font-size:12.5px;color:#a9ae9f}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+
+/* columns */
+.cols{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:20px}
+.col{padding:22px}
+.col .n{font-family:var(--serif);font-size:13px;letter-spacing:.2em;color:var(--gold)}
+.col h3{margin:8px 0 8px;font-family:var(--serif);font-size:20px;line-height:1.3}
+.col p{font-size:15px;margin:0}
+
+/* timeline */
+.route{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));margin-top:26px}
+.stop{position:relative;padding:46px 16px 0 0}
+.stop::before{content:"";position:absolute;top:13px;left:0;right:0;height:3px;background:rgba(227,207,160,.45)}
+.stop:last-child::before{right:auto;width:22px}
+.stop::after{content:"";position:absolute;top:5px;left:0;width:19px;height:19px;border-radius:50%;background:#0b1710;border:3px solid var(--ai)}
+.stop.you::after{background:var(--ai);box-shadow:0 0 14px rgba(227,207,160,.55)}
+.stop .when{display:block;margin-bottom:3px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff}
+.stop h3{font-size:16px}
+.stop p{font-size:14px;color:#bfc3b7;margin:0}
+.stop .me{display:inline-block;margin-top:8px;padding:2px 9px;border-radius:20px;background:rgba(227,207,160,.14);border:1px solid rgba(227,207,160,.4);font-size:10.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold-hi)}
+.sealed{margin-top:26px;max-width:820px;padding:14px 16px;border:1px dashed rgba(255,255,255,.3);border-radius:12px;font-size:14.5px;color:#cfd2c6}
+
+/* two-column blocks */
+.two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:clamp(22px,4vw,48px);align-items:start}
+.catch{list-style:none;margin:0;padding:0}
+.catch li{display:grid;grid-template-columns:28px minmax(0,1fr);gap:12px;padding:16px 0;border-top:1px solid var(--ln)}
+.catch li:first-child{border-top:0;padding-top:4px}
+.catch .i{font-family:var(--serif);font-size:18px;color:var(--gold)}
+.catch b{display:block;color:#fff;font-size:15.5px}
+.catch span.t{font-size:15px;color:#c9ccbf;line-height:1.6}
+
+.bridgebox{padding:22px}
+.bridge{display:grid;gap:10px;margin-top:12px}
+.br{display:grid;grid-template-columns:minmax(120px,180px) minmax(0,1fr) 64px;gap:12px;align-items:center;font-size:14px;color:#d3d5ca}
+.br .bw{position:relative;height:24px;background:rgba(255,255,255,.04);border-radius:3px}
+.br .bar{position:absolute;top:0;bottom:0;border-radius:3px}
+.br .v{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap;color:#fff}
+.br.tot span:first-child{font-weight:700;color:#fff}
+
+/* verdict */
+.formula{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;margin:14px 0;padding:14px 16px;border-left:3px solid var(--ai);background:rgba(0,0,0,.3);border-radius:0 10px 10px 0;font-size:15px;color:#eef0e8}
+.fr{display:inline-flex;flex-direction:column;align-items:center;text-align:center;margin:0 4px;max-width:100%}
+.fr span:first-child{padding:0 6px 3px;border-bottom:1px solid #eef0e8}
+.fr span:last-child{padding-top:3px}
+.score{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));overflow:hidden}
+.score>div{padding:18px 18px}
+.score>div+div{border-left:1px solid var(--ln)}
+.score small{display:block;font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#cfd1c4;line-height:1.5}
+.score .v{display:block;margin-top:6px;font-family:var(--serif);font-size:32px;line-height:1.1;color:#fff;font-variant-numeric:tabular-nums}
+.score .v.ai{color:var(--ai)}
+.verdict{margin-top:14px;padding:16px 18px;border-radius:14px;border:1px solid rgba(127,220,166,.45);background:rgba(127,220,166,.08);font-size:15px;line-height:1.65;color:#dfe6dc}
+.verdict b{color:var(--pass)}
+
+/* table */
+.tbox{margin-top:18px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{border-collapse:collapse;width:100%;min-width:760px;font-size:14px;font-variant-numeric:tabular-nums}
+th,td{padding:11px 11px;border-bottom:1px solid var(--ln);text-align:right;white-space:nowrap;color:#d3d5ca}
+th:first-child,td:first-child{text-align:left}
+th{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--gold)}
+td b{color:#fff}
+tr.q td{padding-top:14px;font-size:11px;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:#a9ae9f;border-bottom:0}
+td.bad{color:var(--miss)}
+
+/* evidence + sources */
+.evid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin-top:18px}
+.evid a{display:block;padding:18px;text-decoration:none}
+.evid a b{display:block;color:#fff;margin-bottom:4px}
+.evid a span{font-size:14px;color:#bfc3b7}
+.sources{margin-top:56px;padding-bottom:30px}
+.sources .in{padding-top:26px;border-top:1px solid rgba(227,207,160,.25)}
+.sources ul{margin:10px 0 16px;padding-left:18px;font-size:14.5px;line-height:1.8;color:#c9ccbf}
+.disc{font-size:14px;color:#a9ae9f}
+
+@media (max-width:900px){
+  .route{grid-template-columns:minmax(0,1fr)}
+  .stop{padding:0 0 22px 40px}
+  .stop::before{top:0;bottom:0;left:8px;right:auto;width:3px;height:auto}
+  .stop:last-child::before{display:none}
+  .stop::after{top:1px}
+}
+@media (max-width:820px){
+  .two,.cols{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi:nth-child(3){border-left:0}
+  .kpi:nth-child(n+3){border-top:1px solid var(--ln)}
+}
+@media (max-width:600px){
+  .cs-hero{padding-top:32px}
+  .cs{padding-top:44px}
+  .row{grid-template-columns:minmax(0,1fr);gap:4px;padding:14px 14px}
+  .sheet-top,.qhead{padding-left:14px;padding-right:14px}
+  .tickrow>div:first-child{display:none}
+  .kpi{padding:16px 14px}
+  .score{grid-template-columns:minmax(0,1fr)}
+  .score>div+div{border-left:0;border-top:1px solid var(--ln)}
+  .br{grid-template-columns:minmax(0,1fr) 60px}
+  .br .bw{grid-column:1/-1;grid-row:2}
+  .col,.bridgebox{padding:18px}
+}
+</style>
+</head>
+<body data-bg="skyline">
+<main class="main">
+<article class="case">
+
+<section class="cs-hero"><div class="wrap">
+  <a class="crumb" href="projects.html">&larr; Portfolio</a><br>
+  <span class="status" id="status"></span>
+  <h1>An AI forecast BDMS's quarter <em>almost exactly</em>, then missed profit on one tax line</h1>
+  <p class="lede">A live test of an AI-assisted research workflow on Bangkok Dusit Medical Services (SET: BDMS), Thailand's largest private hospital group. The forecast was locked on 30 Oct 2026 and scored against BDMS's 3Q26 results, released 16 Nov 2026.</p>
+  <p class="by">By Teedharma (Muang) Somsuk · Units: THB million · Core profit = net profit excluding one-off items</p>
+  <div class="kpis panel">
+    <div class="kpi"><div class="v ok">0.34%</div><div class="k">Revenue error</div></div>
+    <div class="kpi"><div class="v ok">0.17%</div><div class="k">EBITDA error</div></div>
+    <div class="kpi"><div class="v bad">3.33%</div><div class="k">Core profit error</div></div>
+    <div class="kpi"><div class="v ok">Passed</div><div class="k">Pre-set rule · 1 quarter</div></div>
+  </div>
+
+  <div class="rsheet panel" aria-label="Forecasts compared with actual results">
+    <div class="sheet-top">
+      <span><b>Result sheet</b>&nbsp;&nbsp;Distance from the actual result (forecast minus actual, as % of actual)</span>
+      <span class="legend"><span><i style="background:var(--ai)"></i>AI forecast</span><span><i style="background:var(--an)"></i>Analyst mini consensus</span><span><i style="background:#fff;border-radius:0;width:3px"></i>Actual</span></span>
+    </div>
+    <div id="rows"></div>
+  </div>
+  <p class="note" style="margin-top:12px">No broker published an EBITDA forecast on BDMS's definition, so EBITDA has no analyst marker. Analyst consensus for core profit is the average of three broker forecasts published before results.</p>
+</div></section>
+
+<section class="cs"><div class="wrap">
+  <h2>Why test an AI forecast at all</h2>
+  <div class="cols">
+    <div class="col panel"><div class="n">01</div><h3>AI gets numbers wrong</h3><p>Finance teams can't use AI research unless they can check it. This workflow traces every number to its source, logs every error, and measures accuracy against reality.</p></div>
+    <div class="col panel"><div class="n">02</div><h3>Small companies have no analysts</h3><p>Many smaller SET-listed companies have little or no broker coverage, so investors have no forecasts to work from. A process that is proven accurate could fill that gap.</p></div>
+    <div class="col panel"><div class="n">03</div><h3>BDMS is the test bench</h3><p>BDMS is covered by many analysts, so their forecasts give a fair benchmark. If the process holds up here, it can be used where no benchmark exists.</p></div>
+  </div>
+</div></section>
+
+<section class="cs"><div class="wrap">
+  <h2>How the test was kept fair</h2>
+  <p>Every rule was set before results came out, and the forecast was made by an AI that could not see analysts' numbers. The AI did the data gathering and calculations; I designed the test, checked the data, reviewed the assumptions and interpreted the result.</p>
+  <div class="route">
+    <div class="stop"><span class="when">24 Oct</span><h3>Collect</h3><p>AI gathered two years of BDMS financials from the company's own filings.</p></div>
+    <div class="stop you"><span class="when">by 29 Oct</span><h3>Verify by hand</h3><p>I checked 10 key figures against the official report. All matched.</p><span class="me">My step</span></div>
+    <div class="stop"><span class="when">30 Oct</span><h3>Forecast, sealed</h3><p>A fresh AI chat with web search off, given only company data, no analyst forecasts.</p></div>
+    <div class="stop you"><span class="when">30 Oct</span><h3>Review and lock</h3><p>I reviewed the assumptions, kept them, and locked a dated record.</p><span class="me">My step</span></div>
+    <div class="stop"><span class="when">16 Nov</span><h3>Score</h3><p>Actual results vs AI vs analysts, under a rule fixed on 26 Oct.</p></div>
+  </div>
+  <div class="sealed">Analyst forecasts were collected separately and kept out of the forecasting chat until results day, so the AI could not anchor on them.</div>
+</div></section>
+
+<section class="cs"><div class="wrap two">
+  <div>
+    <h2>What the checks caught</h2>
+    <p>Catching errors is the point of the workflow. These were found and logged before the forecast was made.</p>
+  </div>
+  <ul class="catch panel" style="padding:18px 22px">
+    <li><span class="i">1</span><div><b>An AI-written summary website</b><span class="t">gave BDMS's 2025 occupancy as 68%. The company reports 64%. Source rejected.</span></div></li>
+    <li><span class="i">2</span><div><b>The company's own quarters</b><span class="t">add up to 40mm more than its full-year hospital revenue. The reported 3Q25 figure (27,356) was used.</span></div></li>
+    <li><span class="i">3</span><div><b>The AI's own commentary</b><span class="t">said dividends weren't covered by cash flow before its formula had run. The real cover was 1.1x. Corrected and logged.</span></div></li>
+    <li><span class="i">4</span><div><b>A bias risk in the design</b><span class="t">the main chat had already seen a broker forecast, so the forecast was moved to a sealed chat that never saw it.</span></div></li>
+  </ul>
+</div></section>
+
+<section class="cs"><div class="wrap two">
+  <div>
+    <h2>Why core profit missed: tax, not the business</h2>
+    <p>Revenue and EBITDA were almost exact. I chose to keep a 25.5% EBITDA margin assumption against a falling trend; the actual came in at about 25.4%. The gap opened below EBITDA.</p>
+    <p>The forecast assumed an 18% tax rate. The actual rate was about 20%, because a one-off investment-board (BOI) tax incentive in 3Q25 did not repeat. Profit belonging to minority shareholders was also higher than assumed (about 123 vs 68).</p>
+    <p class="note">Pre-tax profit, tax and minority figures for 3Q26 are from InnovestX's results note; minorities are derived as profit after tax minus net profit.</p>
+  </div>
+  <div class="bridgebox panel">
+    <h3>From the AI's core profit to the actual (THB mm)</h3>
+    <div class="bridge" id="bridge"></div>
+    <p class="note" style="margin:14px 0 0">Bars start at 4,400 so the small steps are visible.</p>
+  </div>
+</div></section>
+
+<section class="cs"><div class="wrap two">
+  <div>
+    <h2>The verdict, under a rule set in advance</h2>
+    <p>Each metric's error is |forecast &minus; actual| &divide; actual. The errors are combined with more weight on core profit, the number the market watches. The AI passes if its weighted error is no more than 1 percentage point worse than the analysts'.</p>
+    <div class="formula">Weighted error =<span class="fr"><span>0.25 &times; revenue error + 0.5 &times; core profit error</span><span>0.75</span></span></div>
+    <p class="note">EBITDA (weight 0.25) is left out because no analyst published an EBITDA forecast; the remaining weights are rescaled. Rule fixed on 26 Oct 2026, before results.</p>
+  </div>
+  <div>
+    <div class="score panel" id="score"></div>
+    <div class="verdict"><b>Passed: pilot approved, provisionally.</b> One quarter is a good sign, not proof. A final verdict needs four quarters. On core profit alone, the AI beat one broker, InnovestX (3.33% vs 3.62% error), but not the three-broker average (2.14%).</div>
+  </div>
+</div></section>
+
+<section class="cs"><div class="wrap">
+  <h2>The full result sheet</h2>
+  <p class="note">THB million. Revenue consensus is InnovestX only, because the other brokers used different revenue definitions.</p>
+  <div class="tbox panel">
+    <table>
+      <thead><tr><th>Metric</th><th>Year-ago actual</th><th>AI forecast</th><th>AI range</th><th>Analysts</th><th>Actual</th><th>AI error</th><th>Analyst error</th></tr></thead>
+      <tbody id="tbl"></tbody>
+    </table>
+  </div>
+</div></section>
+
+<section class="cs"><div class="wrap">
+  <h2>What's next</h2>
+  <div class="cols">
+    <div class="col panel"><div class="n">01</div><h3>Tax and minorities added to the data</h3><p>The forecasting data now includes tax incentives and the trend in minority interests, the two causes of this quarter's miss.</p></div>
+    <div class="col panel"><div class="n">02</div><h3>Keep scoring each quarter</h3><p>Test #2, the BDMS 4Q26 forecast, locks on 9 Feb 2027, with results expected about 24&ndash;26 Feb 2027. Four quarters give a real verdict.</p></div>
+    <div class="col panel"><div class="n">03</div><h3>Pilot a company analysts skip</h3><p>Nonthavej Hospital (SET: NTV) has no analyst coverage. Its forecast locks the same day, is scored against actual results only, and gets a valuation (DCF + comparables).</p></div>
+  </div>
+</div></section>
+
+<section class="cs" id="evidence" hidden><div class="wrap">
+  <h2>Evidence</h2>
+  <p>Every claim on this page can be checked in these files.</p>
+  <div class="evid" id="evid"></div>
+</div></section>
+
+<footer class="wrap sources"><div class="in">
+  <b style="color:#fff">Sources</b>
+  <ul>
+    <li>BDMS <a href="https://bdms.listedcompany.com/misc/mdna/26022026-bdms-mdna-fy2025-en.pdf" target="_blank" rel="noopener">FY2025 MD&amp;A</a> and <a href="https://bdms.listedcompany.com/misc/PRESN/20251113-bdms-analyst-presentation-3q2025.pdf" target="_blank" rel="noopener">3Q25 analyst presentation</a></li>
+    <li>3Q26 results: <a href="https://www.mitihoon.com/2026/11/16/696826/" target="_blank" rel="noopener">Mitihoon, 16 Nov 2026</a>; <a href="https://www.innovestx.co.th/cafeinvest/api/media/file/8cb74ad7-2110-40b5-9c92-a1647808ebe9.pdf" target="_blank" rel="noopener">InnovestX results note, 17 Nov 2026</a></li>
+    <li>Pre-results broker forecasts: <a href="https://www.innovestx.co.th/cafeinvest/en/articles/bdms-update-20261014-en" target="_blank" rel="noopener">InnovestX preview, 14 Oct 2026</a>; <a href="https://www.kaohooninternational.com/markets/592416" target="_blank" rel="noopener">Kiatnakin Phatra via Kaohoon, 9 Oct 2026</a>; <a href="https://www.hoonvision.com/hoonset/bdms-21/" target="_blank" rel="noopener">Bualuang via HoonVision, Oct 2026</a></li>
+  </ul>
+  <p class="disc">A learning project, not investment advice. The forecast covers one quarter; results may differ in later quarters.</p>
+</div></footer>
+
+</article>
+</main>
+
+<script>
+/* ================= EDIT HERE =================
+   STATUS: change the line at the top of the page.
+   TESTS: one entry per quarter. To add 4Q26, copy the 3Q26 block, paste it AFTER it, and change the numbers.
+   EVIDENCE: once the files are uploaded to the repo, list them here and the Evidence section appears. */
+var STATUS = ["Status: ongoing", "Test 1 of 4 complete", "Next forecast locks 9 Feb 2027"];
+
+var TESTS = [
+  {
+    quarter: "3Q26", locked: "30 Oct 2026", released: "16 Nov 2026",
+    metrics: [
+      { name: "Hospital revenue", prior: 27356, ai: 28926, lo: 28106, hi: 29747, an: 29000, act: 29025 },
+      { name: "Adjusted EBITDA",  prior: 7193,  ai: 7746,  lo: 7146,  hi: 8307,  an: null,  act: 7759 },
+      { name: "Core profit",      prior: 4319,  ai: 4687,  lo: 4180,  hi: 5162,  an: 4633,  act: 4536 }
+    ],
+    bridge: [
+      { label: "AI core profit", v: 4687, type: "total" },
+      { label: "Higher pre-tax profit", v: 17 },
+      { label: "Tax at ~20%, not 18%", v: -113 },
+      { label: "Higher minority interests", v: -55 },
+      { label: "Actual core profit", v: 4536, type: "total" }
+    ]
+  }
+];
+
+var EVIDENCE = [
+  /* { file: "BDMS_Forecast_Scorecard.xlsx", title: "Forecast scorecard", text: "Rules, the scorecard (AI vs analysts vs actual) and the decision tab with the 1-point rule." },
+     { file: "BDMS_3Q26_Forecast_Lock.pdf", title: "Forecast lock (30 Oct 2026)", text: "The dated record of the forecast, made before results." },
+     { file: "BDMS_Phase1_Dataset_v2.xlsx", title: "Dataset and verification log", text: "The dataset, built-in checks, the verification log and my 10 hand checks." } */
+];
+/* ============================================= */
+
+(function () {
+  var fmt = function (n) { return n.toLocaleString("en-US"); };
+  var dev = function (f, a) { return (f - a) / a * 100; };
+  var err = function (f, a) { return Math.abs(f - a) / a * 100; };
+  var MIN = -1, MAX = 4;
+  var pct = function (d) { return (d - MIN) / (MAX - MIN) * 100; };
+  var sgn = function (d) { return (d > 0 ? "+" : d < 0 ? "−" : "") + Math.abs(d).toFixed(2) + "%"; };
+  var side = function (p) { return p < 9 ? " l" : p > 91 ? " r" : ""; };
+
+  document.getElementById("status").innerHTML = '<span class="dot"></span>' + STATUS.map(function (s) { return "<span>" + s + "</span>"; }).join('<span class="sep">·</span>');
+
+  /* result sheet: newest quarter first */
+  var grids = [0, 1, 2, 3].map(function (t) { return '<div class="grid" style="left:' + pct(t) + '%"></div>'; }).join("");
+  var html = "";
+  TESTS.slice().reverse().forEach(function (T) {
+    if (TESTS.length > 1) html += '<div class="qhead">' + T.quarter + ' · locked ' + T.locked + ' · scored ' + T.released + '</div>';
+    T.metrics.forEach(function (m) {
+      var da = dev(m.ai, m.act), dn = m.an == null ? null : dev(m.an, m.act);
+      var pa = pct(da), pn = dn == null ? 0 : pct(dn);
+      html += '<div class="row"><div><h3>' + m.name + (TESTS.length > 1 ? "" : "") + '</h3><div class="nums">Actual ' + fmt(m.act) + '<br>AI ' + fmt(m.ai) + (m.an == null ? "" : " · Analysts " + fmt(m.an)) + '</div></div>' +
+        '<div class="track"><div class="axis"></div>' + grids + '<div class="zero" style="left:' + pct(0) + '%"></div>' +
+        (dn == null ? "" : '<div class="mk an" style="left:' + pn + '%"></div><div class="lab an' + side(pn) + '" style="left:' + pn + '%">Analysts ' + sgn(dn) + '</div>') +
+        '<div class="mk ai" style="left:' + pa + '%"></div><div class="lab ai' + side(pa) + '" style="left:' + pa + '%">AI ' + sgn(da) + '</div></div></div>';
+    });
+  });
+  html += '<div class="row tickrow"><div></div><div class="ticks">' + [-1, 0, 1, 2, 3, 4].map(function (t) {
+    return '<span style="left:' + pct(t) + '%">' + (t === 0 ? "0% = actual" : (t > 0 ? "+" : "−") + Math.abs(t) + "%") + '</span>';
+  }).join("") + '</div></div>';
+  document.getElementById("rows").innerHTML = html;
+
+  /* full table */
+  document.getElementById("tbl").innerHTML = TESTS.slice().reverse().map(function (T) {
+    return '<tr class="q"><td colspan="8">' + T.quarter + ' · forecast locked ' + T.locked + ' · results ' + T.released + '</td></tr>' +
+      T.metrics.map(function (m) {
+        var e = err(m.ai, m.act);
+        return '<tr><td>' + m.name + '</td><td>' + fmt(m.prior) + '</td><td>' + fmt(m.ai) + '</td><td>' + fmt(m.lo) + ' to ' + fmt(m.hi) + '</td><td>' + (m.an == null ? "none published" : fmt(m.an)) +
+          '</td><td><b>' + fmt(m.act) + '</b></td><td' + (e > 1 ? ' class="bad"' : '') + '>' + e.toFixed(2) + '%</td><td>' + (m.an == null ? "n/a" : err(m.an, m.act).toFixed(2) + "%") + '</td></tr>';
+      }).join("");
+  }).join("");
+
+  /* score for the latest quarter, computed from the data */
+  var L = TESTS[TESTS.length - 1], M = {};
+  L.metrics.forEach(function (m) { M[m.name] = m; });
+  var w = function (k) { var r = M["Hospital revenue"], c = M["Core profit"]; return (0.25 * err(r[k], r.act) + 0.5 * err(c[k], c.act)) / 0.75; };
+  var wa = w("ai"), wn = w("an"), gap = wa - wn;
+  document.getElementById("score").innerHTML =
+    '<div><small>AI weighted error</small><span class="v ai">' + wa.toFixed(2) + '%</span></div>' +
+    '<div><small>Analysts’ weighted error</small><span class="v">' + wn.toFixed(2) + '%</span></div>' +
+    '<div><small>Gap (allowed 1.00)</small><span class="v">' + gap.toFixed(2) + '</span></div>';
+
+  /* bridge for the latest quarter */
+  var lo = 4400, hi = 4720, run = 0;
+  var p = function (v) { return (v - lo) / (hi - lo) * 100; };
+  document.getElementById("bridge").innerHTML = L.bridge.map(function (s) {
+    var left, width, col;
+    if (s.type === "total") { run = s.v; left = 0; width = p(s.v); col = "linear-gradient(90deg,var(--gold-deep),var(--gold))"; }
+    else { var from = run; run += s.v; left = p(Math.min(from, run)); width = p(Math.max(from, run)) - left; col = s.v < 0 ? "var(--miss)" : "var(--pass)"; }
+    return '<div class="br' + (s.type === "total" ? " tot" : "") + '"><span>' + s.label + '</span><div class="bw"><div class="bar" style="left:' + left + '%;width:' + Math.max(width, 0.8) + '%;background:' + col + '"></div></div><span class="v">' +
+      (s.type === "total" ? fmt(s.v) : (s.v > 0 ? "+" : "−") + Math.abs(s.v)) + '</span></div>';
+  }).join("");
+
+  /* evidence */
+  if (EVIDENCE.length) {
+    document.getElementById("evidence").hidden = false;
+    document.getElementById("evid").innerHTML = EVIDENCE.map(function (e) {
+      return '<a class="panel" href="' + e.file + '" download><b>' + e.title + ' &darr;</b><span>' + e.text + '</span></a>';
+    }).join("");
+  }
+})();
+</script>
+<script src="content.js"></script>
+<script src="site.js"></script>
+</body>
+</html>
